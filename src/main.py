@@ -3,7 +3,7 @@ from profile import Profile
 
 def main(argv):
     prof = Profile()
-    prof.load()
+    prof.promptData()
     print(prof)
 
 

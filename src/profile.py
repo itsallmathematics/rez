@@ -2,6 +2,19 @@ import json
 from importer import Importer, ImportType
 from exporter import Exporter, ExportType
 import importer
+from enum import Enum
+
+class Skill():
+    def __init__(self, name):
+        self._name = name
+        self._type = None #TODO: add keyword lookup to determine this
+
+    def __str__(self):
+        return self._name
+
+class SkillType(Enum):
+    Technical = 1
+    Soft = 2
 class Profile():
     def __init__(self):
         self._firstName = None
@@ -9,7 +22,7 @@ class Profile():
         self._middleName = None
         self._mobile = None
         self._education = None
-        self._skills = None
+        self._skills = []
         self._email = None
 
     def __str__(self):
@@ -20,6 +33,7 @@ class Profile():
             f"Education: {self._education}\n"
             f"Mobile: {self._mobile}\n"
             f"Email: {self._email}\n"
+            f"Skills:{[str(s) for s in self._skills]}"
         )
         return output
 
@@ -35,6 +49,16 @@ class Profile():
         if maybeMobile.lower() != 'n':
             self._mobile = maybeMobile
         self._email = input("Email: ")
+        print("Next, we need to add some skills to your resume. These are short items that an employer may be interested in, such as 'verbal communication', 'PHP7', 'C++11', etc...")
+        while True:
+            potential_skill = input("Enter a skill or 'done' to finish: ")
+            if(potential_skill.lower() == "done"):
+                break
+            self.addSkill(potential_skill)
+
+    def addSkill(self, name):
+        self._skills.append(Skill(name))
+
 
     def load(self):
         imp = Importer(self, ImportType.JSON)
